@@ -1,10 +1,9 @@
 #!/bin/bash
 sudo apt -y update
 sudo apt -y upgrade
-sudo apt -y install \
-  nano \
-  git \
-  screen
+sudo apt -y install nano
+sudo apt -y install git
+sudo apt -y install screen
 sudo apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates -y
 curl -sL https://deb.nodesource.com/setup_8.x | sudo bash
 sudo apt -y install gcc g++ make
