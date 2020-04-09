@@ -1,0 +1,58 @@
+#!/bin/bash
+
+cat <<'EOF'
+
+This is Knobby's Hornet node installer
+It seems to work on both 16.06 and 18.04 fresh installs
+You will need to be in root so sudo su if you are not and restart this script
+It also loads nodejs so you can contect to the web interface
+So when it finishes just ctl C and you will be ready to go
+
+
+
+EOF
+
+if [[ "$SKIP_CONFIRM" != true ]]
+then
+    read -p "Do you wish to proceed? [y/N] " yn
+    if echo "$yn" | grep -v -iq "^y"; then
+        echo Cancelled
+        exit 1
+    fi
+fi
+
+sudo apt -y update
+sudo apt -y upgrade
+
+sudo apt -y install \
+  nano \
+  git \
+  wget \	
+  screen
+
+sudo apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates -y
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash
+sudo apt update
+sudo apt -y install gcc g++ make
+sudo apt -y install nodejs
+sudo apt -y install build-essential
+sudo npm install -g node-gyp
+sudo apt -y install python-dev
+sudo apt update
+wget https://github.com/gohornet/hornet/releases/download/v0.4.0-rc7/HORNET-0.4.0-rc7_Linux_x86_64.tar.gz
+tar xvf HORNET-0.4.0-rc7_Linux_x86_64.tar.gz 
+sudo mv HORNET-0.4.0-rc7_Linux_x86_64 Hornet
+cd Hornet
+git clone https://github.com/unioproject/tanglemonitor.git
+cd tanglemonitor/backend
+sudo npm install zeromq
+sudo npm install  
+sudo npm audit fix
+nodejs tanglemonitor-server.js --net mainnet
+
+
+
+
+
+
+
